@@ -148,6 +148,37 @@ python ntc_calibrator.py
 
 ---
 
+### 🌐 Versão Web — Temperature Sensor Calibrator (LASEC/UFU)
+
+🔗 **Acesse online:** <https://lasec-ufu.github.io/TempSensorCalibrator/>
+
+Para complementar o utilitário em Python, o **LASEC/UFU** disponibiliza uma versão **web** da ferramenta, desenvolvida em **Flutter Web (WebAssembly)** seguindo princípios **SOLID**. Ela executa **inteiramente no navegador** — sem servidor, sem instalação e sem envio de dados — e amplia o escopo da calibração para outros sensores de temperatura usados em laboratório.
+
+#### O que ela faz
+
+- **NTC (Termistores):** ajusta simultaneamente a equação de **Steinhart–Hart** (3 pontos exatos) e o **modelo β / R25**, exibindo as duas curvas no mesmo gráfico para comparação direta.
+- **RTD (Pt100 / Pt1000):** ajuste por mínimos quadrados da equação de **Callendar–Van Dusen** `R(T) = R0·(1 + A·T + B·T² + C·T³)` com 3 ou mais pontos.
+- **Termopares (tipos K, J, T, E, N, S, R, B):** ajuste polinomial `E(T) = c0 + c1·T + … + c4·T⁴` por mínimos quadrados, com pontos default da norma NIST ITS-90 para cada tipo.
+- **Calculadora bidirecional** `T → R/E` e `R/E → T` (inversão por Newton–Raphson).
+- **Gráfico interativo** com legenda, pontos medidos em destaque e faixa do eixo X configurável.
+
+#### Como usar
+
+1. Selecione o sensor no painel lateral esquerdo (NTC, RTD ou um dos termopares).  
+2. Edite os pares `(T, R)` ou `(T, mV)` no painel direito — são carregados valores default representativos para começar.  
+3. Clique em **Calcular**: os coeficientes aparecem no painel e as curvas são desenhadas no gráfico central.  
+4. Use a **Calculadora** para converter valores pontuais nos dois sentidos.  
+
+> A aplicação é **responsiva**: em telas grandes mostra os três painéis (sensores · gráfico · configurações), e em telas menores os painéis laterais viram menus retráteis.
+
+#### Tecnologia
+
+- **Flutter 3.41 + Dart 3.11**, build `--wasm` para máxima performance no navegador.
+- Hospedagem no **GitHub Pages** com deploy automatizado via **GitHub Actions**.
+- Código aberto: <https://github.com/LASEC-UFU/TempSensorCalibrator>
+
+---
+
 ## 6. Considerações Finais
 
 O estudo dos **termistores NTC e PTC** oferece uma base sólida para compreender fenômenos térmicos em sistemas eletrônicos e industriais.  
