@@ -2,10 +2,10 @@
 // Usa jtask para agendamento simples e compara métodos Beta e Steinhart
 // Circuito: Vcc---NTC---ADC---SERIES_RESISTOR---GND
 
+
 #include <Arduino.h>
 #include "util/jtask.h"
-#include "wserial_c.h"
-#include "display_c.h"
+
 
 #if defined(ARDUINO_ARCH_ESP32)
   #define ADC_RESOLUTION 4095
@@ -18,9 +18,6 @@
 #endif
 
 #define TEMPERATURENOMINAL 25
-
-WSerial_c WSerial;
-Display_c disp;
 
 // ---------- FILTROS ----------
 static int readStableADC(int pin) {
@@ -75,15 +72,11 @@ void tarefaNTC() {
   float temperature2 = getTempTermistorNTCSteinhart(adc, 10000, 0.001129241f, 0.0002341077f, 0.00000008775468f);
   if (isnan(tBetaFilt))      tBetaFilt      = temperature1; else tBetaFilt      = iir(tBetaFilt,      temperature1, IIR_ALPHA);
   if (isnan(tSteinhartFilt)) tSteinhartFilt = temperature2; else tSteinhartFilt = iir(tSteinhartFilt, temperature2, IIR_ALPHA);
-  WSerial.plot("Temp Beta", millis(), tBetaFilt);
-  WSerial.plot("Temp Steinhart", millis(), tSteinhartFilt);
-  disp.setText(2, (String("TB:") + String(tBetaFilt, 2)).c_str());
-  disp.setText(3, (String("TS:") + String(tSteinhartFilt, 2)).c_str());
+
 }
 
+
 void setup() {
-  WSerial.start(0, 115200);
-  disp.start();
 #if defined(ARDUINO_ARCH_ESP32)
   analogReadResolution(12);
 #endif
